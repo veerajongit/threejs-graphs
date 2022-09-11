@@ -1,9 +1,14 @@
 import * as THREE from 'three';
 
 export class Bar {
-    private color: THREE.ColorRepresentation;
-    constructor(color: THREE.ColorRepresentation) {
-        this.color = color;
+    private color?: THREE.ColorRepresentation;
+    constructor(color?: THREE.ColorRepresentation) {
+        if (color === undefined) {
+            this.color = `rgb(${THREE.MathUtils.randInt(0, 255)}, ${THREE.MathUtils.randInt(0, 255)}, ${THREE.MathUtils.randInt(0, 255)})`;
+        } else {
+            this.color = color;
+        }
+
     }
 
     getBar = (
@@ -11,16 +16,11 @@ export class Bar {
             width: number,
             height: number,
             length: number,
-        },
-        position: {
-            x: number,
-            z: number
         }
     ): THREE.Mesh => {
         const geometry = new THREE.BoxGeometry(dimensions.width, dimensions.height, dimensions.length);
-        const material = new THREE.MeshToonMaterial({ color: this.color });
+        const material = new THREE.MeshBasicMaterial({ color: this.color });
         const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.set(position.x, dimensions.height / 2, position.z);
         return mesh;
     }
 }

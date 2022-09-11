@@ -1,54 +1,41 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Bar } from './CustomGeometry/Bar';
-import { DrawGrid } from './grid';
+import { BasicDraw } from './CustomGeometry/BasicDraw';
 
 const scene = new THREE.Scene();
 const rendererSettings: THREE.WebGLRendererParameters = {};
-rendererSettings.canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
+const canvas = document.querySelector<HTMLCanvasElement>('#canvas')!;
+rendererSettings.canvas = canvas;
 const renderer = new THREE.WebGLRenderer(rendererSettings);
 
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(1200, 700);
 
-const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 250, 500);
-camera.lookAt(250, 250, 250);
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(50, 50, 75);
+camera.lookAt(50, 50, -50);
 
+new BasicDraw(0xffffff).plot2Lines(100).forEach(line => scene.add(line));
 
-const barOne = (new Bar(0x0000ff)).getBar({ width: 10, height: 50, length: 10, }, { x: 25, z: 25 });
+let xPosition = 0;
+const barList: Array<THREE.Mesh> = [];
+for (let i = 0; i < 15; i++) {
+    xPosition += 6.5;
+    const height = THREE.MathUtils.randInt(0, 100);
+    barList[i] = (new Bar).getBar({ width: 2.5, height, length: 2.5, });
+    barList[i].position.set(xPosition, (height / 2) + 0.5, 0);
+}
 
-scene.add(barOne);
+barList.forEach(bar => scene.add(bar));
 
-
-const barTwo = (new Bar(0x0000ff)).getBar({ width: 10, height: 100, length: 10, }, { x: 50, z: 50 });
-
-scene.add(barTwo);
-
-const barThree = (new Bar(0x000000)).getBar({ width: 10, height: 200, length: 10 }, { x: 75, z: 75 });
-scene.add(barThree);
-
-const pointLight = new THREE.AmbientLight(0xffffff);
-pointLight.position.set(5, 5, 5);
-scene.add(pointLight);
-
-const controls = new OrbitControls(camera, renderer.domElement);
-renderer.render(scene, camera);
-renderer.setClearColor(0xffffff, 1);
-
-DrawGrid(scene, 0x000000, 500);
+// const light = new THREE.AmbientLight(0x404040);
+// scene.add(light);
 
 function animate() {
     requestAnimationFrame(animate);
-
-    barOne.rotation.y += 0.01;
-    barTwo.rotation.y += 0.02;
-    barThree.rotation.y += 0.03;
-
-    controls.update();
+    barList.forEach(bar => bar.rotation.y += 0.01);
     renderer.render(scene, camera);
 }
-
 animate();
 
 // if(WebGL.default.isWebGLAvailable()){
