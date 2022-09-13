@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { Bar } from './CustomGeometry/Bar';
-import { BasicDraw } from './CustomGeometry/BasicDraw';
+import { BarGraph } from './CustomGeometry/BarGraph';
+import { Graph } from './CustomGeometry/Graph';
 import { Text } from './CustomGeometry/Text';
 
 
@@ -17,9 +17,9 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.set(50, 50, 75);
 camera.lookAt(50, 50, -50);
 
-const basicDraw = new BasicDraw(0xffffff);
-basicDraw.plot2Lines(100).forEach(line => scene.add(line));
-basicDraw.plotYAxis(5, 50).forEach(async text => {
+const graph = new Graph(0xffffff);
+graph.XYAxis(100).forEach(line => scene.add(line));
+graph.YAxisNumericLabels(5, 50).forEach(async text => {
     const txt = await text;
     scene.add(txt);
 });
@@ -29,8 +29,7 @@ const barList: Array<THREE.Mesh> = [];
 for (let i = 0; i < 15; i++) {
     xPosition += 6.5;
     const height = THREE.MathUtils.randInt(0, 100);
-    barList[i] = (new Bar).getBar({ width: 2.5, height, length: 2.5, });
-    barList[i].position.set(xPosition, (height / 2) + 0.5, 0);
+    barList[i] = (new BarGraph).bar({ width: 2.5, height, length: 2.5 }, { x: xPosition, y: (height / 2) + 0.5, z: 0 });
 }
 
 barList.forEach(bar => scene.add(bar));
