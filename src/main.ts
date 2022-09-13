@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { Bar } from './CustomGeometry/Bar';
 import { BasicDraw } from './CustomGeometry/BasicDraw';
+import { Text } from './CustomGeometry/Text';
+
 
 const scene = new THREE.Scene();
 const rendererSettings: THREE.WebGLRendererParameters = {};
@@ -15,7 +17,12 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.set(50, 50, 75);
 camera.lookAt(50, 50, -50);
 
-new BasicDraw(0xffffff).plot2Lines(100).forEach(line => scene.add(line));
+const basicDraw = new BasicDraw(0xffffff);
+basicDraw.plot2Lines(100).forEach(line => scene.add(line));
+basicDraw.plotYAxis(5, 50).forEach(async text => {
+    const txt = await text;
+    scene.add(txt);
+});
 
 let xPosition = 0;
 const barList: Array<THREE.Mesh> = [];
@@ -28,12 +35,20 @@ for (let i = 0; i < 15; i++) {
 
 barList.forEach(bar => scene.add(bar));
 
+barList.forEach(async bar => {
+    const txt = await Text.get(bar.position.y.toString(), bar.position.x, bar.position.y, 0xffffff);
+    scene.add(txt);
+});
+
+
 // const light = new THREE.AmbientLight(0x404040);
 // scene.add(light);
 
 function animate() {
     requestAnimationFrame(animate);
     barList.forEach(bar => bar.rotation.y += 0.01);
+    // txt.rotation.x += 0.01;
+    //     txt.rotation.y += 0.01;
     renderer.render(scene, camera);
 }
 animate();
