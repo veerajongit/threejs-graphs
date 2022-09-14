@@ -1,4 +1,4 @@
-import { BufferGeometry, ColorRepresentation, Line, LineBasicMaterial, Vector3 } from 'three';
+import { BufferGeometry, ColorRepresentation, Line, LineBasicMaterial, MathUtils, Vector3 } from 'three';
 
 export interface pointInSpace {
     x: number,
@@ -11,6 +11,8 @@ export class BasicElements {
     constructor(color: ColorRepresentation) {
         this.color = color;
     }
+
+    public static randColorGenerator = (): ColorRepresentation => `rgb(${MathUtils.randInt(0, 255)}, ${MathUtils.randInt(0, 255)}, ${MathUtils.randInt(0, 255)})`;
 
     public line = (startPoint: pointInSpace, endPoint: pointInSpace): Line => {
         const material = new LineBasicMaterial({ color: this.color });

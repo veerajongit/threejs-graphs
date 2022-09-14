@@ -1,7 +1,13 @@
 import * as THREE from 'three';
 import { BarGraph } from './CustomGeometry/BarGraph';
+import { BasicElements } from './CustomGeometry/BasicElements';
 import { Graph } from './CustomGeometry/Graph';
 import { Text } from './CustomGeometry/Text';
+
+const environment = {
+    bgColor: 0xffffff,
+    color: 0x000000
+}
 
 
 const scene = new THREE.Scene();
@@ -17,7 +23,7 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.set(50, 50, 75);
 camera.lookAt(50, 50, -50);
 
-const graph = new Graph(0xffffff);
+const graph = new Graph(environment.color);
 graph.XYAxis(100).forEach(line => scene.add(line));
 graph.YAxisNumericLabels(5, 50).forEach(async text => {
     const txt = await text;
@@ -25,42 +31,51 @@ graph.YAxisNumericLabels(5, 50).forEach(async text => {
 });
 
 let xPosition = 0;
-const barList: Array<THREE.Mesh> = [];
-for (let i = 0; i < 15; i++) {
+const barList3D: Array<THREE.Mesh> = [];
+for (let i = 0; i < 7; i++) {
     xPosition += 6.5;
     const height = THREE.MathUtils.randInt(0, 100);
-    barList[i] = (new BarGraph).bar3d({ width: 2.5, height, length: 2.5 }, { x: xPosition, y: (height / 2) + 0.5, z: 0 });
+    barList3D[i] = (new BarGraph(BasicElements.randColorGenerator())).bar3d({ width: 2.5, height, length: 2.5 }, { x: xPosition, y: 0, z: 0 });
 }
 
-barList.forEach(bar => scene.add(bar));
+barList3D.forEach(bar => scene.add(bar));
 
-barList.forEach(async bar => {
+barList3D.forEach(async bar => {
     const txt = await Text.get(
         bar.position.y.toString(),
         { x: bar.position.x, y: (bar.position.y * 2) + 1.5, z: 0 },
-        0xffffff);
+        environment.color
+    );
     scene.add(txt);
 });
 
-const bar2d = (new BarGraph).bar2d({ width: 2.5, height: 10 }, { x: 105, y: 5.5, z: 0 });
-scene.add(bar2d);
 
-(async () => {
-    const txt = await Text.get('5',
-        { x: 105, y: 12.5, z: 0 },
-        0xffffff);
+const barList2D: Array<THREE.Mesh> = [];
+for (let i = 0; i < 7; i++) {
+    xPosition += 6.5;
+    const height = THREE.MathUtils.randInt(0, 100);
+    barList2D[i] = (new BarGraph(BasicElements.randColorGenerator())).bar2d({ width: 2.5, height }, { x: xPosition, y: 0, z: 0 });
+}
+barList2D.forEach(bar => scene.add(bar));
+
+barList2D.forEach(async bar => {
+    const txt = await Text.get(
+        bar.position.y.toString(),
+        { x: bar.position.x, y: (bar.position.y * 2) + 1.5, z: 0 },
+        environment.color
+    );
     scene.add(txt);
-})();
+});
 
 
 // const light = new THREE.AmbientLight(0x404040);
 // scene.add(light);
 
+renderer.setClearColor(environment.bgColor);
+
 function animate() {
     requestAnimationFrame(animate);
-    barList.forEach(bar => bar.rotation.y += 0.01);
-    // txt.rotation.x += 0.01;
-    //     txt.rotation.y += 0.01;
+    barList3D.forEach(bar => bar.rotation.y += 0.01);
     renderer.render(scene, camera);
 }
 animate();

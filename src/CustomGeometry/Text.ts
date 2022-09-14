@@ -20,7 +20,7 @@ export class Text {
                 });
 
                 const txt = new Mesh(geometry, material);
-                txt.position.set(position.x, position.y, 0);
+                txt.position.set(position.x, position.y, position.z);
                 resolve(txt);
             });
         });
