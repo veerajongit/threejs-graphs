@@ -29,15 +29,28 @@ const barList: Array<THREE.Mesh> = [];
 for (let i = 0; i < 15; i++) {
     xPosition += 6.5;
     const height = THREE.MathUtils.randInt(0, 100);
-    barList[i] = (new BarGraph).bar({ width: 2.5, height, length: 2.5 }, { x: xPosition, y: (height / 2) + 0.5, z: 0 });
+    barList[i] = (new BarGraph).bar3d({ width: 2.5, height, length: 2.5 }, { x: xPosition, y: (height / 2) + 0.5, z: 0 });
 }
 
 barList.forEach(bar => scene.add(bar));
 
 barList.forEach(async bar => {
-    const txt = await Text.get(bar.position.y.toString(), bar.position.x, bar.position.y, 0xffffff);
+    const txt = await Text.get(
+        bar.position.y.toString(),
+        { x: bar.position.x, y: (bar.position.y * 2) + 1.5, z: 0 },
+        0xffffff);
     scene.add(txt);
 });
+
+const bar2d = (new BarGraph).bar2d({ width: 2.5, height: 10 }, { x: 105, y: 5.5, z: 0 });
+scene.add(bar2d);
+
+(async () => {
+    const txt = await Text.get('5',
+        { x: 105, y: 12.5, z: 0 },
+        0xffffff);
+    scene.add(txt);
+})();
 
 
 // const light = new THREE.AmbientLight(0x404040);

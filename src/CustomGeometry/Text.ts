@@ -1,16 +1,13 @@
-import * as THREE from 'three';
+import { ColorRepresentation, Mesh, MeshBasicMaterial } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
+import { pointInSpace } from "./BasicElements";
 
 export class Text {
-    // protected color: THREE.ColorRepresentation;
-    // constructor(color: THREE.ColorRepresentation) {
-    //     this.color = color;
-    // }
-    static get = (text: string, x: number, y: number, color: THREE.ColorRepresentation): Promise<THREE.Mesh> => {
+    static get = (text: string, position: pointInSpace, color: ColorRepresentation): Promise<Mesh> => {
         return new Promise(resolve => {
             const loader = new FontLoader();
-            loader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/droid/droid_sans_regular.typeface.json', function (font) {
+            loader.load('src/fonts/droid_sans_regular.typeface.json', function (font) {
                 const geometry = new TextGeometry(text, {
                     font: font,
                     size: 1.5,
@@ -18,12 +15,12 @@ export class Text {
                 });
                 geometry.center();
 
-                const material = new THREE.MeshBasicMaterial({
+                const material = new MeshBasicMaterial({
                     color
                 });
 
-                const txt = new THREE.Mesh(geometry, material);
-                txt.position.set(x, (y * 2) + 1.5, 0);
+                const txt = new Mesh(geometry, material);
+                txt.position.set(position.x, position.y, 0);
                 resolve(txt);
             });
         });

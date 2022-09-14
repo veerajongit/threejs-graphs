@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { BufferGeometry, ColorRepresentation, Line, LineBasicMaterial, Vector3 } from 'three';
 
 export interface pointInSpace {
     x: number,
@@ -7,18 +7,18 @@ export interface pointInSpace {
 }
 
 export class BasicElements {
-    public color: THREE.ColorRepresentation;
-    constructor(color: THREE.ColorRepresentation) {
-        this.color = color
+    public color: ColorRepresentation;
+    constructor(color: ColorRepresentation) {
+        this.color = color;
     }
 
-    public line = (startPoint: pointInSpace, endPoint: pointInSpace): THREE.Line => {
-        const material = new THREE.LineBasicMaterial({ color: this.color });
+    public line = (startPoint: pointInSpace, endPoint: pointInSpace): Line => {
+        const material = new LineBasicMaterial({ color: this.color });
         const points = [
-            new THREE.Vector3(startPoint.x, startPoint.y, startPoint.z),
-            new THREE.Vector3(endPoint.x, endPoint.y, endPoint.z),
+            new Vector3(startPoint.x, startPoint.y, startPoint.z),
+            new Vector3(endPoint.x, endPoint.y, endPoint.z),
         ];
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        return new THREE.Line(geometry, material);
+        const geometry = new BufferGeometry().setFromPoints(points);
+        return new Line(geometry, material);
     }
 }
