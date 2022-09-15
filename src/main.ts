@@ -18,12 +18,18 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(1200, 700);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(50, 50, 75);
-camera.lookAt(50, 50, -50);
+camera.position.set(100, 50, 80);
+camera.lookAt(100, 50, -100);
 
 const graph = new Graph(env.color);
-graph.XYAxis(100).forEach(line => scene.add(line));
+scene.add(graph.yAxis(100));
+scene.add(graph.xAxis(200));
 graph.YAxisNumericLabels(5, 50).forEach(async text => {
+    const txt = await text;
+    scene.add(txt);
+});
+
+graph.XAxisLabels(['abc', 'uvwxyz', 'ghijklm'], 6.5).forEach(async text => {
     const txt = await text;
     scene.add(txt);
 });

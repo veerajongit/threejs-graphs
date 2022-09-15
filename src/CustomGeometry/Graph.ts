@@ -20,4 +20,12 @@ export class Graph extends BasicElements {
         }
         return texts;
     }
+
+    XAxisLabels = (labels: Array<string>, distance: number): Array<Promise<Mesh>> => {
+        const texts = [];
+        for (let i = 0; i < labels.length; i++) {
+            texts.push(Text.getDiagonal(labels[i], { x: distance * (i + 1), y: -1.5, z: 0 }, this.color));
+        }
+        return texts;
+    }
 }

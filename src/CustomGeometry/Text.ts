@@ -25,4 +25,28 @@ export class Text {
             });
         });
     }
+
+    static getDiagonal = (text: string, position: pointInSpace, color: ColorRepresentation): Promise<Mesh> => {
+        return new Promise(resolve => {
+            const loader = new FontLoader();
+            loader.load('src/fonts/droid_sans_regular.typeface.json', function (font) {
+                const geometry = new TextGeometry(text, {
+                    font: font,
+                    size: 1.5,
+                    height: 0.1
+                });
+                geometry.center();
+                geometry.rotateX(100);
+                geometry.rotateY(Math.PI/2);
+
+                const material = new MeshBasicMaterial({
+                    color
+                });
+
+                const txt = new Mesh(geometry, material);
+                txt.position.set(position.x, position.y - 1.5, position.z);
+                resolve(txt);
+            });
+        });
+    }
 }
