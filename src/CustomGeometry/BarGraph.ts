@@ -1,6 +1,8 @@
 import { BoxGeometry, ColorRepresentation, DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
 import { Graph } from './Graph';
 import { pointInSpace } from './BasicElements';
+import { DefaultEnvironment } from '../default.env';
+import { Environment } from '../environment.default';
 
 interface BarDimensions {
     width: number,
@@ -9,7 +11,11 @@ interface BarDimensions {
 }
 
 export class BarGraph extends Graph {
-    constructor(color: ColorRepresentation = 0xffffff) {
+    constructor(color?: ColorRepresentation) {
+        if (color === undefined) {
+            const env: DefaultEnvironment = Environment();
+            color = env.barChart.defaultColor;
+        }
         super(color);
     }
 

@@ -3,12 +3,10 @@ import { BarGraph } from './CustomGeometry/BarGraph';
 import { BasicElements } from './CustomGeometry/BasicElements';
 import { Graph } from './CustomGeometry/Graph';
 import { Text } from './CustomGeometry/Text';
+import { DefaultEnvironment } from './default.env';
+import { Environment } from './environment.default';
 
-const environment = {
-    bgColor: 0xffffff,
-    color: 0x000000
-}
-
+const env: DefaultEnvironment = Environment();
 
 const scene = new THREE.Scene();
 const rendererSettings: THREE.WebGLRendererParameters = {};
@@ -23,7 +21,7 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.set(50, 50, 75);
 camera.lookAt(50, 50, -50);
 
-const graph = new Graph(environment.color);
+const graph = new Graph(env.color);
 graph.XYAxis(100).forEach(line => scene.add(line));
 graph.YAxisNumericLabels(5, 50).forEach(async text => {
     const txt = await text;
@@ -44,7 +42,7 @@ barList3D.forEach(async bar => {
     const txt = await Text.get(
         bar.position.y.toString(),
         { x: bar.position.x, y: (bar.position.y * 2) + 1.5, z: 0 },
-        environment.color
+        env.color
     );
     scene.add(txt);
 });
@@ -62,7 +60,7 @@ barList2D.forEach(async bar => {
     const txt = await Text.get(
         bar.position.y.toString(),
         { x: bar.position.x, y: (bar.position.y * 2) + 1.5, z: 0 },
-        environment.color
+        env.color
     );
     scene.add(txt);
 });
@@ -71,11 +69,11 @@ barList2D.forEach(async bar => {
 // const light = new THREE.AmbientLight(0x404040);
 // scene.add(light);
 
-renderer.setClearColor(environment.bgColor);
+renderer.setClearColor(env.bgColor);
 
 function animate() {
     requestAnimationFrame(animate);
-    barList3D.forEach(bar => bar.rotation.y += 0.01);
+    barList3D.forEach(bar => bar.rotation.y += env.barChart.rotationSpeed);
     renderer.render(scene, camera);
 }
 animate();
