@@ -13,7 +13,9 @@
     "vite": "^3.1.0"
   },
   "dependencies": {
+    "@types/random-words": "^1.1.2",
     "@types/three": "^0.144.0",
+    "random-words": "^1.2.0",
     "three": "^0.144.0"
   }
 }

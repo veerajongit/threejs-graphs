@@ -5,6 +5,7 @@ import { Graph } from './CustomGeometry/Graph';
 import { Text } from './CustomGeometry/Text';
 import { DefaultEnvironment } from './default.env';
 import { Environment } from './environment.default';
+import * as randomWords from 'random-words';
 
 const env: DefaultEnvironment = Environment();
 
@@ -29,7 +30,11 @@ graph.YAxisNumericLabels(5, 50).forEach(async text => {
     scene.add(txt);
 });
 
-graph.XAxisLabels(['abc', 'uvwxyz', 'ghijklm'], 6.5).forEach(async text => {
+const xLabels: Array<string> = [];
+for (let i = 0; i < 14; i++) {
+    xLabels.push(randomWords());
+}
+graph.XAxisLabels(xLabels, 6.5).forEach(async text => {
     const txt = await text;
     scene.add(txt);
 });

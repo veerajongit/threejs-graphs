@@ -7,7 +7,7 @@ export class Text {
     static get = (text: string, position: coordinates, color: ColorRepresentation): Promise<Mesh> => {
         return new Promise(resolve => {
             const loader = new FontLoader();
-            loader.load('src/fonts/droid_sans_regular.typeface.json', function (font) {
+            loader.load('/fonts/droid_sans_regular.typeface.json', function (font) {
                 const geometry = new TextGeometry(text, {
                     font: font,
                     size: 1.5,
@@ -29,7 +29,7 @@ export class Text {
     static getDiagonal = (text: string, position: coordinates, color: ColorRepresentation): Promise<Mesh> => {
         return new Promise(resolve => {
             const loader = new FontLoader();
-            loader.load('src/fonts/droid_sans_regular.typeface.json', function (font) {
+            loader.load('/fonts/droid_sans_regular.typeface.json', function (font) {
                 const geometry = new TextGeometry(text, {
                     font: font,
                     size: 1.5,
