@@ -3,15 +3,12 @@ import { BasicElements } from './BasicElements';
 import { Text } from './Text';
 
 export class Graph extends BasicElements {
-    constructor(color: ColorRepresentation) {
+    constructor(color?: ColorRepresentation) {
         super(color);
     }
 
     xAxis = (length: number): Line => this.line({ x: 0, y: 0, z: 0 }, { x: length, y: 0, z: 0 });
-
     yAxis = (length: number): Line => this.line({ x: 0, y: 0, z: 0 }, { x: 0, y: length, z: 0 });
-
-    XYAxis = (length: number): Array<Line> => [this.xAxis(length), this.yAxis(length)];
 
     YAxisNumericLabels = (points: number, length: number): Array<Promise<Mesh>> => {
         const texts = [];

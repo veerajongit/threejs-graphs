@@ -1,10 +1,10 @@
 import { ColorRepresentation, Mesh, MeshBasicMaterial } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
-import { pointInSpace } from "./BasicElements";
+import { coordinates } from "./BasicElements";
 
 export class Text {
-    static get = (text: string, position: pointInSpace, color: ColorRepresentation): Promise<Mesh> => {
+    static get = (text: string, position: coordinates, color: ColorRepresentation): Promise<Mesh> => {
         return new Promise(resolve => {
             const loader = new FontLoader();
             loader.load('src/fonts/droid_sans_regular.typeface.json', function (font) {
@@ -26,7 +26,7 @@ export class Text {
         });
     }
 
-    static getDiagonal = (text: string, position: pointInSpace, color: ColorRepresentation): Promise<Mesh> => {
+    static getDiagonal = (text: string, position: coordinates, color: ColorRepresentation): Promise<Mesh> => {
         return new Promise(resolve => {
             const loader = new FontLoader();
             loader.load('src/fonts/droid_sans_regular.typeface.json', function (font) {
@@ -37,14 +37,12 @@ export class Text {
                 });
                 geometry.center();
                 geometry.rotateX(100);
-                geometry.rotateY(Math.PI/2);
+                geometry.rotateY(Math.PI / 3);
 
-                const material = new MeshBasicMaterial({
-                    color
-                });
+                const material = new MeshBasicMaterial({ color });
 
                 const txt = new Mesh(geometry, material);
-                txt.position.set(position.x, position.y - 1.5, position.z);
+                txt.position.set(position.x - 0.5, position.y - 1.5, position.z);
                 resolve(txt);
             });
         });
